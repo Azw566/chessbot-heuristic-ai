@@ -1,0 +1,227 @@
+{
+  "version": "1",
+  "metadata": {
+    "marimo_version": "0.19.8"
+  },
+  "cells": [
+    {
+      "id": "MJUe",
+      "code_hash": "f1c4fec29ad6395e7be7bcf6ff85a918",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h1 id=\"evolutionary-chessbot\">Evolutionary ChessBot</h1>\n<span class=\"paragraph\">Train a chess engine through genetic evolution. Genomes encode piece values\nand evaluation weights. A population of bots plays tournaments, and the\nfittest survive to breed the next generation.</span>\n<span class=\"paragraph\">After evolution, browse and replay every game from every generation.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "BYtC",
+      "code_hash": "5af068a796f71f012ea985ec09107bee",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><hr />\n<h2 id=\"game-replay-viewer\">Game Replay Viewer</h2>\n<span class=\"paragraph\">Browse and replay every game from the tournament.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "Hbol",
+      "code_hash": "1926ba61bbba59bd2c9c47502e5691a8",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "vblA",
+      "code_hash": "c1a774492abee20e1f328292f2f4a258",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/html": "<marimo-ui-element object-id='vblA-23' random-id='6aff1e6e-fca2-a0b3-922d-5466ff619a63'><marimo-form data-initial-value='null' data-label='null' data-element-id='&quot;vblA-22&quot;' data-loading='false' data-bordered='true' data-submit-button-label='&quot;Set Parameters&quot;' data-submit-button-disabled='false' data-clear-on-submit='false' data-show-clear-button='false' data-clear-button-label='&quot;Clear&quot;' data-should-validate='false'><marimo-ui-element object-id='vblA-22' random-id='e4960f18-6829-a5e5-34af-73cda86be72c'><marimo-dict data-initial-value='{&quot;pop_size&quot;:6,&quot;generations&quot;:3,&quot;depth&quot;:2,&quot;elite_pct&quot;:0.25,&quot;mutation_rate&quot;:0.2,&quot;mutation_mag&quot;:0.1,&quot;seed&quot;:42}' data-label='null' data-element-ids='{&quot;vblA-15&quot;:&quot;pop_size&quot;,&quot;vblA-16&quot;:&quot;generations&quot;,&quot;vblA-17&quot;:&quot;depth&quot;,&quot;vblA-18&quot;:&quot;elite_pct&quot;,&quot;vblA-19&quot;:&quot;mutation_rate&quot;,&quot;vblA-20&quot;:&quot;mutation_mag&quot;,&quot;vblA-21&quot;:&quot;seed&quot;}'><span class=\"markdown prose dark:prose-invert contents\"><span class=\"paragraph\"><strong>Evolution Parameters</strong></span>\n<span class=\"paragraph\"><marimo-ui-element object-id='vblA-15' random-id='055a719b-fa9e-b5a3-dda9-e52caf25c1fd'><marimo-slider data-initial-value='6' data-label='&quot;&lt;span class=&#92;&quot;markdown prose dark:prose-invert contents&#92;&quot;&gt;&lt;span class=&#92;&quot;paragraph&#92;&quot;&gt;Population size&lt;/span&gt;&lt;/span&gt;&quot;' data-start='4' data-stop='20' data-step='2' data-steps='[]' data-debounce='false' data-disabled='false' data-orientation='&quot;horizontal&quot;' data-show-value='false' data-include-input='false' data-full-width='false'></marimo-slider></marimo-ui-element>\n<marimo-ui-element object-id='vblA-16' random-id='06ac89fb-9394-2966-62cc-92701789436e'><marimo-slider data-initial-value='3' data-label='&quot;&lt;span class=&#92;&quot;markdown prose dark:prose-invert contents&#92;&quot;&gt;&lt;span class=&#92;&quot;paragraph&#92;&quot;&gt;Generations&lt;/span&gt;&lt;/span&gt;&quot;' data-start='1' data-stop='20' data-step='1' data-steps='[]' data-debounce='false' data-disabled='false' data-orientation='&quot;horizontal&quot;' data-show-value='false' data-include-input='false' data-full-width='false'></marimo-slider></marimo-ui-element>\n<marimo-ui-element object-id='vblA-17' random-id='65d46da4-19b4-fd66-529d-878b533ad058'><marimo-slider data-initial-value='2' data-label='&quot;&lt;span class=&#92;&quot;markdown prose dark:prose-invert contents&#92;&quot;&gt;&lt;span class=&#92;&quot;paragraph&#92;&quot;&gt;Search depth (plies)&lt;/span&gt;&lt;/span&gt;&quot;' data-start='1' data-stop='4' data-step='1' data-steps='[]' data-debounce='false' data-disabled='false' data-orientation='&quot;horizontal&quot;' data-show-value='false' data-include-input='false' data-full-width='false'></marimo-slider></marimo-ui-element>\n<marimo-ui-element object-id='vblA-18' random-id='880c6717-ca66-d8f2-2e70-847af4e427e5'><marimo-slider data-initial-value='0.25' data-label='&quot;&lt;span class=&#92;&quot;markdown prose dark:prose-invert contents&#92;&quot;&gt;&lt;span class=&#92;&quot;paragraph&#92;&quot;&gt;Elite fraction&lt;/span&gt;&lt;/span&gt;&quot;' data-start='0.1' data-stop='0.5' data-step='0.05' data-steps='[]' data-debounce='false' data-disabled='false' data-orientation='&quot;horizontal&quot;' data-show-value='false' data-include-input='false' data-full-width='false'></marimo-slider></marimo-ui-element>\n<marimo-ui-element object-id='vblA-19' random-id='65f3bada-cdc3-8b54-356c-e873a465ba2c'><marimo-slider data-initial-value='0.2' data-label='&quot;&lt;span class=&#92;&quot;markdown prose dark:prose-invert contents&#92;&quot;&gt;&lt;span class=&#92;&quot;paragraph&#92;&quot;&gt;Mutation rate&lt;/span&gt;&lt;/span&gt;&quot;' data-start='0.05' data-stop='0.5' data-step='0.05' data-steps='[]' data-debounce='false' data-disabled='false' data-orientation='&quot;horizontal&quot;' data-show-value='false' data-include-input='false' data-full-width='false'></marimo-slider></marimo-ui-element>\n<marimo-ui-element object-id='vblA-20' random-id='8085a553-80e5-85b3-9e87-d73d33526662'><marimo-slider data-initial-value='0.1' data-label='&quot;&lt;span class=&#92;&quot;markdown prose dark:prose-invert contents&#92;&quot;&gt;&lt;span class=&#92;&quot;paragraph&#92;&quot;&gt;Mutation magnitude&lt;/span&gt;&lt;/span&gt;&quot;' data-start='0.05' data-stop='0.5' data-step='0.05' data-steps='[]' data-debounce='false' data-disabled='false' data-orientation='&quot;horizontal&quot;' data-show-value='false' data-include-input='false' data-full-width='false'></marimo-slider></marimo-ui-element>\n<marimo-ui-element object-id='vblA-21' random-id='a0b01b05-1763-efff-17dd-5f1207237b54'><marimo-number data-initial-value='42' data-label='&quot;&lt;span class=&#92;&quot;markdown prose dark:prose-invert contents&#92;&quot;&gt;&lt;span class=&#92;&quot;paragraph&#92;&quot;&gt;Random seed&lt;/span&gt;&lt;/span&gt;&quot;' data-start='0' data-stop='9999' data-debounce='false' data-full-width='false' data-disabled='false'></marimo-number></marimo-ui-element></span></span></marimo-dict></marimo-ui-element></marimo-form></marimo-ui-element>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "bkHC",
+      "code_hash": "94935467ea2e66624f2bd8fdadcd34cf",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/html": "<marimo-ui-element object-id='bkHC-0' random-id='5003c174-7d40-7bb5-f4ca-8d6882888020'><marimo-button data-initial-value='0' data-label='&quot;&lt;span class=&#92;&quot;markdown prose dark:prose-invert contents&#92;&quot;&gt;&lt;span class=&#92;&quot;paragraph&#92;&quot;&gt;Run Evolution&lt;/span&gt;&lt;/span&gt;&quot;' data-kind='&quot;neutral&quot;' data-disabled='false' data-full-width='false'></marimo-button></marimo-ui-element>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "lEQa",
+      "code_hash": "39db10da75ee56d1a9d3325746b93cb2",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><span class=\"paragraph\">Evolution finished: <strong>3</strong> generations, <strong>45</strong> games played, champion fitness = <strong>9.39</strong></span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "PKri",
+      "code_hash": "6fe6171bd5ab246c3e9b83fb9bcfd685",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/html": "<marimo-plotly data-figure='{&quot;data&quot;:[{&quot;mode&quot;:&quot;lines+markers&quot;,&quot;name&quot;:&quot;Best&quot;,&quot;x&quot;:[0,1,2],&quot;y&quot;:[7.008333333333333,7.1,9.391666666666667],&quot;type&quot;:&quot;scatter&quot;},{&quot;mode&quot;:&quot;lines+markers&quot;,&quot;name&quot;:&quot;Average&quot;,&quot;x&quot;:[0,1,2],&quot;y&quot;:[5.341666666666666,5.183333333333334,6.444444444444444],&quot;type&quot;:&quot;scatter&quot;},{&quot;mode&quot;:&quot;lines+markers&quot;,&quot;name&quot;:&quot;Worst&quot;,&quot;x&quot;:[0,1,2],&quot;y&quot;:[4.0,4.0,0.0],&quot;type&quot;:&quot;scatter&quot;}],&quot;layout&quot;:{&quot;template&quot;:{&quot;data&quot;:{&quot;barpolar&quot;:[{&quot;marker&quot;:{&quot;line&quot;:{&quot;color&quot;:&quot;white&quot;,&quot;width&quot;:0.5},&quot;pattern&quot;:{&quot;fillmode&quot;:&quot;overlay&quot;,&quot;size&quot;:10,&quot;solidity&quot;:0.2}},&quot;type&quot;:&quot;barpolar&quot;}],&quot;bar&quot;:[{&quot;error_x&quot;:{&quot;color&quot;:&quot;#2a3f5f&quot;},&quot;error_y&quot;:{&quot;color&quot;:&quot;#2a3f5f&quot;},&quot;marker&quot;:{&quot;line&quot;:{&quot;color&quot;:&quot;white&quot;,&quot;width&quot;:0.5},&quot;pattern&quot;:{&quot;fillmode&quot;:&quot;overlay&quot;,&quot;size&quot;:10,&quot;solidity&quot;:0.2}},&quot;type&quot;:&quot;bar&quot;}],&quot;carpet&quot;:[{&quot;aaxis&quot;:{&quot;endlinecolor&quot;:&quot;#2a3f5f&quot;,&quot;gridcolor&quot;:&quot;#C8D4E3&quot;,&quot;linecolor&quot;:&quot;#C8D4E3&quot;,&quot;minorgridcolor&quot;:&quot;#C8D4E3&quot;,&quot;startlinecolor&quot;:&quot;#2a3f5f&quot;},&quot;baxis&quot;:{&quot;endlinecolor&quot;:&quot;#2a3f5f&quot;,&quot;gridcolor&quot;:&quot;#C8D4E3&quot;,&quot;linecolor&quot;:&quot;#C8D4E3&quot;,&quot;minorgridcolor&quot;:&quot;#C8D4E3&quot;,&quot;startlinecolor&quot;:&quot;#2a3f5f&quot;},&quot;type&quot;:&quot;carpet&quot;}],&quot;choropleth&quot;:[{&quot;colorbar&quot;:{&quot;outlinewidth&quot;:0,&quot;ticks&quot;:&quot;&quot;},&quot;type&quot;:&quot;choropleth&quot;}],&quot;contourcarpet&quot;:[{&quot;colorbar&quot;:{&quot;outlinewidth&quot;:0,&quot;ticks&quot;:&quot;&quot;},&quot;type&quot;:&quot;contourcarpet&quot;}],&quot;contour&quot;:[{&quot;colorbar&quot;:{&quot;outlinewidth&quot;:0,&quot;ticks&quot;:&quot;&quot;},&quot;colorscale&quot;:[[0.0,&quot;#0d0887&quot;],[0.1111111111111111,&quot;#46039f&quot;],[0.2222222222222222,&quot;#7201a8&quot;],[0.3333333333333333,&quot;#9c179e&quot;],[0.4444444444444444,&quot;#bd3786&quot;],[0.5555555555555556,&quot;#d8576b&quot;],[0.6666666666666666,&quot;#ed7953&quot;],[0.7777777777777778,&quot;#fb9f3a&quot;],[0.8888888888888888,&quot;#fdca26&quot;],[1.0,&quot;#f0f921&quot;]],&quot;type&quot;:&quot;contour&quot;}],&quot;heatmap&quot;:[{&quot;colorbar&quot;:{&quot;outlinewidth&quot;:0,&quot;ticks&quot;:&quot;&quot;},&quot;colorscale&quot;:[[0.0,&quot;#0d0887&quot;],[0.1111111111111111,&quot;#46039f&quot;],[0.2222222222222222,&quot;#7201a8&quot;],[0.3333333333333333,&quot;#9c179e&quot;],[0.4444444444444444,&quot;#bd3786&quot;],[0.5555555555555556,&quot;#d8576b&quot;],[0.6666666666666666,&quot;#ed7953&quot;],[0.7777777777777778,&quot;#fb9f3a&quot;],[0.8888888888888888,&quot;#fdca26&quot;],[1.0,&quot;#f0f921&quot;]],&quot;type&quot;:&quot;heatmap&quot;}],&quot;histogram2dcontour&quot;:[{&quot;colorbar&quot;:{&quot;outlinewidth&quot;:0,&quot;ticks&quot;:&quot;&quot;},&quot;colorscale&quot;:[[0.0,&quot;#0d0887&quot;],[0.1111111111111111,&quot;#46039f&quot;],[0.2222222222222222,&quot;#7201a8&quot;],[0.3333333333333333,&quot;#9c179e&quot;],[0.4444444444444444,&quot;#bd3786&quot;],[0.5555555555555556,&quot;#d8576b&quot;],[0.6666666666666666,&quot;#ed7953&quot;],[0.7777777777777778,&quot;#fb9f3a&quot;],[0.8888888888888888,&quot;#fdca26&quot;],[1.0,&quot;#f0f921&quot;]],&quot;type&quot;:&quot;histogram2dcontour&quot;}],&quot;histogram2d&quot;:[{&quot;colorbar&quot;:{&quot;outlinewidth&quot;:0,&quot;ticks&quot;:&quot;&quot;},&quot;colorscale&quot;:[[0.0,&quot;#0d0887&quot;],[0.1111111111111111,&quot;#46039f&quot;],[0.2222222222222222,&quot;#7201a8&quot;],[0.3333333333333333,&quot;#9c179e&quot;],[0.4444444444444444,&quot;#bd3786&quot;],[0.5555555555555556,&quot;#d8576b&quot;],[0.6666666666666666,&quot;#ed7953&quot;],[0.7777777777777778,&quot;#fb9f3a&quot;],[0.8888888888888888,&quot;#fdca26&quot;],[1.0,&quot;#f0f921&quot;]],&quot;type&quot;:&quot;histogram2d&quot;}],&quot;histogram&quot;:[{&quot;marker&quot;:{&quot;pattern&quot;:{&quot;fillmode&quot;:&quot;overlay&quot;,&quot;size&quot;:10,&quot;solidity&quot;:0.2}},&quot;type&quot;:&quot;histogram&quot;}],&quot;mesh3d&quot;:[{&quot;colorbar&quot;:{&quot;outlinewidth&quot;:0,&quot;ticks&quot;:&quot;&quot;},&quot;type&quot;:&quot;mesh3d&quot;}],&quot;parcoords&quot;:[{&quot;line&quot;:{&quot;colorbar&quot;:{&quot;outlinewidth&quot;:0,&quot;ticks&quot;:&quot;&quot;}},&quot;type&quot;:&quot;parcoords&quot;}],&quot;pie&quot;:[{&quot;automargin&quot;:true,&quot;type&quot;:&quot;pie&quot;}],&quot;scatter3d&quot;:[{&quot;line&quot;:{&quot;colorbar&quot;:{&quot;outlinewidth&quot;:0,&quot;ticks&quot;:&quot;&quot;}},&quot;marker&quot;:{&quot;colorbar&quot;:{&quot;outlinewidth&quot;:0,&quot;ticks&quot;:&quot;&quot;}},&quot;type&quot;:&quot;scatter3d&quot;}],&quot;scattercarpet&quot;:[{&quot;marker&quot;:{&quot;colorbar&quot;:{&quot;outlinewidth&quot;:0,&quot;ticks&quot;:&quot;&quot;}},&quot;type&quot;:&quot;scattercarpet&quot;}],&quot;scattergeo&quot;:[{&quot;marker&quot;:{&quot;colorbar&quot;:{&quot;outlinewidth&quot;:0,&quot;ticks&quot;:&quot;&quot;}},&quot;type&quot;:&quot;scattergeo&quot;}],&quot;scattergl&quot;:[{&quot;marker&quot;:{&quot;colorbar&quot;:{&quot;outlinewidth&quot;:0,&quot;ticks&quot;:&quot;&quot;}},&quot;type&quot;:&quot;scattergl&quot;}],&quot;scattermapbox&quot;:[{&quot;marker&quot;:{&quot;colorbar&quot;:{&quot;outlinewidth&quot;:0,&quot;ticks&quot;:&quot;&quot;}},&quot;type&quot;:&quot;scattermapbox&quot;}],&quot;scattermap&quot;:[{&quot;marker&quot;:{&quot;colorbar&quot;:{&quot;outlinewidth&quot;:0,&quot;ticks&quot;:&quot;&quot;}},&quot;type&quot;:&quot;scattermap&quot;}],&quot;scatterpolargl&quot;:[{&quot;marker&quot;:{&quot;colorbar&quot;:{&quot;outlinewidth&quot;:0,&quot;ticks&quot;:&quot;&quot;}},&quot;type&quot;:&quot;scatterpolargl&quot;}],&quot;scatterpolar&quot;:[{&quot;marker&quot;:{&quot;colorbar&quot;:{&quot;outlinewidth&quot;:0,&quot;ticks&quot;:&quot;&quot;}},&quot;type&quot;:&quot;scatterpolar&quot;}],&quot;scatter&quot;:[{&quot;fillpattern&quot;:{&quot;fillmode&quot;:&quot;overlay&quot;,&quot;size&quot;:10,&quot;solidity&quot;:0.2},&quot;type&quot;:&quot;scatter&quot;}],&quot;scatterternary&quot;:[{&quot;marker&quot;:{&quot;colorbar&quot;:{&quot;outlinewidth&quot;:0,&quot;ticks&quot;:&quot;&quot;}},&quot;type&quot;:&quot;scatterternary&quot;}],&quot;surface&quot;:[{&quot;colorbar&quot;:{&quot;outlinewidth&quot;:0,&quot;ticks&quot;:&quot;&quot;},&quot;colorscale&quot;:[[0.0,&quot;#0d0887&quot;],[0.1111111111111111,&quot;#46039f&quot;],[0.2222222222222222,&quot;#7201a8&quot;],[0.3333333333333333,&quot;#9c179e&quot;],[0.4444444444444444,&quot;#bd3786&quot;],[0.5555555555555556,&quot;#d8576b&quot;],[0.6666666666666666,&quot;#ed7953&quot;],[0.7777777777777778,&quot;#fb9f3a&quot;],[0.8888888888888888,&quot;#fdca26&quot;],[1.0,&quot;#f0f921&quot;]],&quot;type&quot;:&quot;surface&quot;}],&quot;table&quot;:[{&quot;cells&quot;:{&quot;fill&quot;:{&quot;color&quot;:&quot;#EBF0F8&quot;},&quot;line&quot;:{&quot;color&quot;:&quot;white&quot;}},&quot;header&quot;:{&quot;fill&quot;:{&quot;color&quot;:&quot;#C8D4E3&quot;},&quot;line&quot;:{&quot;color&quot;:&quot;white&quot;}},&quot;type&quot;:&quot;table&quot;}]},&quot;layout&quot;:{&quot;annotationdefaults&quot;:{&quot;arrowcolor&quot;:&quot;#2a3f5f&quot;,&quot;arrowhead&quot;:0,&quot;arrowwidth&quot;:1},&quot;autotypenumbers&quot;:&quot;strict&quot;,&quot;coloraxis&quot;:{&quot;colorbar&quot;:{&quot;outlinewidth&quot;:0,&quot;ticks&quot;:&quot;&quot;}},&quot;colorscale&quot;:{&quot;diverging&quot;:[[0,&quot;#8e0152&quot;],[0.1,&quot;#c51b7d&quot;],[0.2,&quot;#de77ae&quot;],[0.3,&quot;#f1b6da&quot;],[0.4,&quot;#fde0ef&quot;],[0.5,&quot;#f7f7f7&quot;],[0.6,&quot;#e6f5d0&quot;],[0.7,&quot;#b8e186&quot;],[0.8,&quot;#7fbc41&quot;],[0.9,&quot;#4d9221&quot;],[1,&quot;#276419&quot;]],&quot;sequential&quot;:[[0.0,&quot;#0d0887&quot;],[0.1111111111111111,&quot;#46039f&quot;],[0.2222222222222222,&quot;#7201a8&quot;],[0.3333333333333333,&quot;#9c179e&quot;],[0.4444444444444444,&quot;#bd3786&quot;],[0.5555555555555556,&quot;#d8576b&quot;],[0.6666666666666666,&quot;#ed7953&quot;],[0.7777777777777778,&quot;#fb9f3a&quot;],[0.8888888888888888,&quot;#fdca26&quot;],[1.0,&quot;#f0f921&quot;]],&quot;sequentialminus&quot;:[[0.0,&quot;#0d0887&quot;],[0.1111111111111111,&quot;#46039f&quot;],[0.2222222222222222,&quot;#7201a8&quot;],[0.3333333333333333,&quot;#9c179e&quot;],[0.4444444444444444,&quot;#bd3786&quot;],[0.5555555555555556,&quot;#d8576b&quot;],[0.6666666666666666,&quot;#ed7953&quot;],[0.7777777777777778,&quot;#fb9f3a&quot;],[0.8888888888888888,&quot;#fdca26&quot;],[1.0,&quot;#f0f921&quot;]]},&quot;colorway&quot;:[&quot;#636efa&quot;,&quot;#EF553B&quot;,&quot;#00cc96&quot;,&quot;#ab63fa&quot;,&quot;#FFA15A&quot;,&quot;#19d3f3&quot;,&quot;#FF6692&quot;,&quot;#B6E880&quot;,&quot;#FF97FF&quot;,&quot;#FECB52&quot;],&quot;font&quot;:{&quot;color&quot;:&quot;#2a3f5f&quot;},&quot;geo&quot;:{&quot;bgcolor&quot;:&quot;white&quot;,&quot;lakecolor&quot;:&quot;white&quot;,&quot;landcolor&quot;:&quot;white&quot;,&quot;showlakes&quot;:true,&quot;showland&quot;:true,&quot;subunitcolor&quot;:&quot;#C8D4E3&quot;},&quot;hoverlabel&quot;:{&quot;align&quot;:&quot;left&quot;},&quot;hovermode&quot;:&quot;closest&quot;,&quot;mapbox&quot;:{&quot;style&quot;:&quot;light&quot;},&quot;paper_bgcolor&quot;:&quot;white&quot;,&quot;plot_bgcolor&quot;:&quot;white&quot;,&quot;polar&quot;:{&quot;angularaxis&quot;:{&quot;gridcolor&quot;:&quot;#EBF0F8&quot;,&quot;linecolor&quot;:&quot;#EBF0F8&quot;,&quot;ticks&quot;:&quot;&quot;},&quot;bgcolor&quot;:&quot;white&quot;,&quot;radialaxis&quot;:{&quot;gridcolor&quot;:&quot;#EBF0F8&quot;,&quot;linecolor&quot;:&quot;#EBF0F8&quot;,&quot;ticks&quot;:&quot;&quot;}},&quot;scene&quot;:{&quot;xaxis&quot;:{&quot;backgroundcolor&quot;:&quot;white&quot;,&quot;gridcolor&quot;:&quot;#DFE8F3&quot;,&quot;gridwidth&quot;:2,&quot;linecolor&quot;:&quot;#EBF0F8&quot;,&quot;showbackground&quot;:true,&quot;ticks&quot;:&quot;&quot;,&quot;zerolinecolor&quot;:&quot;#EBF0F8&quot;},&quot;yaxis&quot;:{&quot;backgroundcolor&quot;:&quot;white&quot;,&quot;gridcolor&quot;:&quot;#DFE8F3&quot;,&quot;gridwidth&quot;:2,&quot;linecolor&quot;:&quot;#EBF0F8&quot;,&quot;showbackground&quot;:true,&quot;ticks&quot;:&quot;&quot;,&quot;zerolinecolor&quot;:&quot;#EBF0F8&quot;},&quot;zaxis&quot;:{&quot;backgroundcolor&quot;:&quot;white&quot;,&quot;gridcolor&quot;:&quot;#DFE8F3&quot;,&quot;gridwidth&quot;:2,&quot;linecolor&quot;:&quot;#EBF0F8&quot;,&quot;showbackground&quot;:true,&quot;ticks&quot;:&quot;&quot;,&quot;zerolinecolor&quot;:&quot;#EBF0F8&quot;}},&quot;shapedefaults&quot;:{&quot;line&quot;:{&quot;color&quot;:&quot;#2a3f5f&quot;}},&quot;ternary&quot;:{&quot;aaxis&quot;:{&quot;gridcolor&quot;:&quot;#DFE8F3&quot;,&quot;linecolor&quot;:&quot;#A2B1C6&quot;,&quot;ticks&quot;:&quot;&quot;},&quot;baxis&quot;:{&quot;gridcolor&quot;:&quot;#DFE8F3&quot;,&quot;linecolor&quot;:&quot;#A2B1C6&quot;,&quot;ticks&quot;:&quot;&quot;},&quot;bgcolor&quot;:&quot;white&quot;,&quot;caxis&quot;:{&quot;gridcolor&quot;:&quot;#DFE8F3&quot;,&quot;linecolor&quot;:&quot;#A2B1C6&quot;,&quot;ticks&quot;:&quot;&quot;}},&quot;title&quot;:{&quot;x&quot;:0.05},&quot;xaxis&quot;:{&quot;automargin&quot;:true,&quot;gridcolor&quot;:&quot;#EBF0F8&quot;,&quot;linecolor&quot;:&quot;#EBF0F8&quot;,&quot;ticks&quot;:&quot;&quot;,&quot;title&quot;:{&quot;standoff&quot;:15},&quot;zerolinecolor&quot;:&quot;#EBF0F8&quot;,&quot;zerolinewidth&quot;:2},&quot;yaxis&quot;:{&quot;automargin&quot;:true,&quot;gridcolor&quot;:&quot;#EBF0F8&quot;,&quot;linecolor&quot;:&quot;#EBF0F8&quot;,&quot;ticks&quot;:&quot;&quot;,&quot;title&quot;:{&quot;standoff&quot;:15},&quot;zerolinecolor&quot;:&quot;#EBF0F8&quot;,&quot;zerolinewidth&quot;:2}}},&quot;title&quot;:{&quot;text&quot;:&quot;Fitness Over Generations&quot;},&quot;xaxis&quot;:{&quot;title&quot;:{&quot;text&quot;:&quot;Generation&quot;}},&quot;yaxis&quot;:{&quot;title&quot;:{&quot;text&quot;:&quot;Fitness&quot;}},&quot;dragmode&quot;:&quot;zoom&quot;}}' data-config='{}'></marimo-plotly>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "Xref",
+      "code_hash": "fb16573d0fade4f1c08d6f4fae2cd2b3",
+      "outputs": [
+        {
+          "type": "error",
+          "ename": "multiple-defs",
+          "evalue": "The variable 'fig' was defined by another cell",
+          "traceback": []
+        },
+        {
+          "type": "error",
+          "ename": "multiple-defs",
+          "evalue": "The variable 'gens' was defined by another cell",
+          "traceback": []
+        },
+        {
+          "type": "error",
+          "ename": "multiple-defs",
+          "evalue": "The variable 'i' was defined by another cell",
+          "traceback": []
+        },
+        {
+          "type": "error",
+          "ename": "multiple-defs",
+          "evalue": "The variable 'label' was defined by another cell",
+          "traceback": []
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "SFPL",
+      "code_hash": "73355bd1d4405846661a9973c29a1226",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h3 id=\"champion-genome-fitness-939\">Champion Genome (fitness: 9.39)</h3>\n<table>\n<thead>\n<tr>\n<th>Gene</th>\n<th>Value</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>pawn_value</td>\n<td>0.8720</td>\n</tr>\n<tr>\n<td>knight_value</td>\n<td>2.3872</td>\n</tr>\n<tr>\n<td>bishop_value</td>\n<td>3.9817</td>\n</tr>\n<tr>\n<td>rook_value</td>\n<td>4.7682</td>\n</tr>\n<tr>\n<td>queen_value</td>\n<td>8.1083</td>\n</tr>\n<tr>\n<td>w_material</td>\n<td>0.6093</td>\n</tr>\n<tr>\n<td>w_mobility</td>\n<td>0.1105</td>\n</tr>\n<tr>\n<td>w_center</td>\n<td>0.3313</td>\n</tr>\n<tr>\n<td>w_king_safety</td>\n<td>0.1990</td>\n</tr>\n<tr>\n<td>w_pawn_structure</td>\n<td>0.1488</td>\n</tr>\n</tbody>\n</table></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "RGSE",
+      "code_hash": "967161d5eaa65f3af9f610153835e2b4",
+      "outputs": [
+        {
+          "type": "error",
+          "ename": "exception",
+          "evalue": "The option name '1' is not a valid option. Please use one of the following options: ['Generation 0', 'Generation 1', 'Generation 2']",
+          "traceback": []
+        }
+      ],
+      "console": [
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "<span class=\"codehilite\"><div class=\"highlight\"><pre><span></span><span class=\"gt\">Traceback (most recent call last):</span>\n  File <span class=\"nb\">&quot;C:\\Users\\telem\\AppData\\Roaming\\Python\\Python314\\site-packages\\marimo\\_runtime\\executor.py&quot;</span>, line <span class=\"m\">138</span>, in <span class=\"n\">execute_cell</span>\n<span class=\"w\">    </span><span class=\"n\">exec</span><span class=\"p\">(</span><span class=\"n\">cell</span><span class=\"o\">.</span><span class=\"n\">body</span><span class=\"p\">,</span> <span class=\"n\">glbls</span><span class=\"p\">)</span>\n<span class=\"w\">    </span><span class=\"pm\">~~~~^^^^^^^^^^^^^^^^^^</span>\n  File <span class=\"nb\">&quot;C:\\Users\\telem\\AppData\\Local\\Temp\\marimo_38584\\__marimo__cell_RGSE_.py&quot;</span>, line <span class=\"m\">5</span>, in <span class=\"n\">&lt;module&gt;</span>\n<span class=\"w\">    </span><span class=\"n\">gen_dropdown</span> <span class=\"o\">=</span> <span class=\"n\">mo</span><span class=\"o\">.</span><span class=\"n\">ui</span><span class=\"o\">.</span><span class=\"n\">dropdown</span><span class=\"p\">(</span>\n<span class=\"w\">    </span>    <span class=\"n\">options</span><span class=\"o\">=</span><span class=\"n\">gen_options</span><span class=\"p\">,</span>\n<span class=\"w\">    </span>    <span class=\"n\">value</span><span class=\"o\">=</span><span class=\"mi\">1</span><span class=\"p\">,</span>\n<span class=\"w\">    </span>    <span class=\"n\">label</span><span class=\"o\">=</span><span class=\"s2\">&quot;Generation&quot;</span><span class=\"p\">,</span>\n<span class=\"w\">    </span><span class=\"p\">)</span>\n  File <span class=\"nb\">&quot;C:\\Users\\telem\\AppData\\Roaming\\Python\\Python314\\site-packages\\marimo\\_plugins\\ui\\_impl\\input.py&quot;</span>, line <span class=\"m\">1029</span>, in <span class=\"n\">__init__</span>\n<span class=\"w\">    </span><span class=\"nb\">super</span><span class=\"p\">()</span><span class=\"o\">.</span><span class=\"fm\">__init__</span><span class=\"p\">(</span>\n<span class=\"w\">    </span><span class=\"pm\">~~~~~~~~~~~~~~~~^</span>\n<span class=\"w\">    </span>    <span class=\"n\">component_name</span><span class=\"o\">=</span><span class=\"n\">dropdown</span><span class=\"o\">.</span><span class=\"n\">_name</span><span class=\"p\">,</span>\n<span class=\"w\">        </span><span class=\"pm\">^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^</span>\n<span class=\"w\">    </span><span class=\"o\">...&lt;</span><span class=\"mi\">8</span> <span class=\"n\">lines</span><span class=\"o\">&gt;...</span>\n<span class=\"w\">    </span>    <span class=\"n\">on_change</span><span class=\"o\">=</span><span class=\"n\">on_change</span><span class=\"p\">,</span>\n<span class=\"w\">        </span><span class=\"pm\">^^^^^^^^^^^^^^^^^^^^</span>\n<span class=\"w\">    </span><span class=\"p\">)</span>\n<span class=\"w\">    </span><span class=\"pm\">^</span>\n  File <span class=\"nb\">&quot;C:\\Users\\telem\\AppData\\Roaming\\Python\\Python314\\site-packages\\marimo\\_plugins\\ui\\_core\\ui_element.py&quot;</span>, line <span class=\"m\">167</span>, in <span class=\"n\">__init__</span>\n<span class=\"w\">    </span><span class=\"bp\">self</span><span class=\"o\">.</span><span class=\"n\">_initialize</span><span class=\"p\">(</span><span class=\"bp\">self</span><span class=\"o\">.</span><span class=\"n\">_args</span><span class=\"p\">)</span>\n<span class=\"w\">    </span><span class=\"pm\">~~~~~~~~~~~~~~~~^^^^^^^^^^^^</span>\n  File <span class=\"nb\">&quot;C:\\Users\\telem\\AppData\\Roaming\\Python\\Python314\\site-packages\\marimo\\_plugins\\ui\\_core\\ui_element.py&quot;</span>, line <span class=\"m\">273</span>, in <span class=\"n\">_initialize</span>\n<span class=\"w\">    </span><span class=\"bp\">self</span><span class=\"o\">.</span><span class=\"n\">_value</span> <span class=\"o\">=</span> <span class=\"bp\">self</span><span class=\"o\">.</span><span class=\"n\">_initial_value</span> <span class=\"o\">=</span> <span class=\"bp\">self</span><span class=\"o\">.</span><span class=\"n\">_convert_value</span><span class=\"p\">(</span><span class=\"n\">initial_value</span><span class=\"p\">)</span>\n<span class=\"w\">                                        </span><span class=\"pm\">~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^</span>\n  File <span class=\"nb\">&quot;C:\\Users\\telem\\AppData\\Roaming\\Python\\Python314\\site-packages\\marimo\\_plugins\\ui\\_impl\\input.py&quot;</span>, line <span class=\"m\">1055</span>, in <span class=\"n\">_convert_value</span>\n<span class=\"w\">    </span><span class=\"k\">raise</span> <span class=\"ne\">ValueError</span><span class=\"p\">(</span>\n<span class=\"w\">    </span><span class=\"o\">...&lt;</span><span class=\"mi\">4</span> <span class=\"n\">lines</span><span class=\"o\">&gt;...</span>\n<span class=\"w\">    </span><span class=\"p\">)</span>\n<span class=\"gr\">ValueError</span>: <span class=\"n\">The option name &#39;1&#39; is not a valid option. Please use one of the following options: [&#39;Generation 0&#39;, &#39;Generation 1&#39;, &#39;Generation 2&#39;]</span>\n</pre></div>\n</span>",
+          "mimetype": "application/vnd.marimo+traceback"
+        }
+      ]
+    },
+    {
+      "id": "Kclp",
+      "code_hash": "dd543600d320b59ade7822c4dac99975",
+      "outputs": [
+        {
+          "type": "error",
+          "ename": "multiple-defs",
+          "evalue": "The variable 'gen' was defined by another cell",
+          "traceback": []
+        },
+        {
+          "type": "error",
+          "ename": "multiple-defs",
+          "evalue": "The variable 'i' was defined by another cell",
+          "traceback": []
+        },
+        {
+          "type": "error",
+          "ename": "multiple-defs",
+          "evalue": "The variable 'label' was defined by another cell",
+          "traceback": []
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "emfo",
+      "code_hash": "0ffa964b528a28595497b7554ad2ac57",
+      "outputs": [
+        {
+          "type": "error",
+          "ename": "exception",
+          "evalue": "Name `gen_dropdown` is not defined. It was expected to be defined in ",
+          "traceback": []
+        }
+      ],
+      "console": [
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "<span class=\"codehilite\"><div class=\"highlight\"><pre><span></span><span class=\"gt\">Traceback (most recent call last):</span>\n  File <span class=\"nb\">&quot;C:\\Users\\telem\\AppData\\Roaming\\Python\\Python314\\site-packages\\marimo\\_runtime\\executor.py&quot;</span>, line <span class=\"m\">138</span>, in <span class=\"n\">execute_cell</span>\n<span class=\"w\">    </span><span class=\"n\">exec</span><span class=\"p\">(</span><span class=\"n\">cell</span><span class=\"o\">.</span><span class=\"n\">body</span><span class=\"p\">,</span> <span class=\"n\">glbls</span><span class=\"p\">)</span>\n<span class=\"w\">    </span><span class=\"pm\">~~~~^^^^^^^^^^^^^^^^^^</span>\n  File <span class=\"nb\">&quot;C:\\Users\\telem\\AppData\\Local\\Temp\\marimo_38584\\__marimo__cell_emfo_.py&quot;</span>, line <span class=\"m\">1</span>, in <span class=\"n\">&lt;module&gt;</span>\n<span class=\"w\">    </span><span class=\"n\">mo</span><span class=\"o\">.</span><span class=\"n\">stop</span><span class=\"p\">(</span><span class=\"n\">gen_dropdown</span><span class=\"o\">.</span><span class=\"n\">value</span> <span class=\"ow\">is</span> <span class=\"kc\">None</span> <span class=\"ow\">or</span> <span class=\"n\">game_dropdown</span><span class=\"o\">.</span><span class=\"n\">value</span> <span class=\"ow\">is</span> <span class=\"kc\">None</span><span class=\"p\">)</span>\n<span class=\"w\">            </span><span class=\"pm\">^^^^^^^^^^^^</span>\n<span class=\"gr\">NameError</span>: <span class=\"n\">name &#39;gen_dropdown&#39; is not defined</span>\n</pre></div>\n</span>",
+          "mimetype": "application/vnd.marimo+traceback"
+        }
+      ]
+    },
+    {
+      "id": "Hstk",
+      "code_hash": "bfe4086729c3f1ba9e12d8881da3ab41",
+      "outputs": [
+        {
+          "type": "error",
+          "ename": "multiple-defs",
+          "evalue": "The variable 'game' was defined by another cell",
+          "traceback": []
+        },
+        {
+          "type": "error",
+          "ename": "multiple-defs",
+          "evalue": "The variable 'i' was defined by another cell",
+          "traceback": []
+        }
+      ],
+      "console": []
+    }
+  ]
+}

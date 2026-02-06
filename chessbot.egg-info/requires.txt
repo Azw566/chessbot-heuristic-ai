@@ -1,0 +1,7 @@
+chess>=1.10
+numpy>=1.24
+marimo>=0.6
+plotly>=5.18
+
+[dev]
+pytest>=7.0

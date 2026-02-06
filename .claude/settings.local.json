@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dir:*)",
+      "Bash(pip:*)",
+      "WebSearch",
+      "WebFetch(domain:docs.marimo.io)"
+    ]
+  }
+}

@@ -1,0 +1,11 @@
+Metadata-Version: 2.4
+Name: chessbot
+Version: 0.1.0
+Summary: Evolutionary chess engine using genetic algorithms
+Requires-Python: >=3.10
+Requires-Dist: chess>=1.10
+Requires-Dist: numpy>=1.24
+Requires-Dist: marimo>=0.6
+Requires-Dist: plotly>=5.18
+Provides-Extra: dev
+Requires-Dist: pytest>=7.0; extra == "dev"
