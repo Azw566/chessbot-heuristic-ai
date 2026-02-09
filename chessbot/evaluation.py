@@ -77,12 +77,11 @@ def eval_king_safety(board: chess.Board) -> float:
                         shelter += 1
         score += sign * shelter * 0.3
 
-        # Enemy proximity penalty: count enemy pieces within Chebyshev distance 2
+        # Enemy proximity penalty: iterate only enemy non-pawn pieces
         enemy = not color
         penalty = 0
-        for sq in chess.SQUARES:
-            piece = board.piece_at(sq)
-            if piece and piece.color == enemy and piece.piece_type != chess.PAWN:
+        for pt in [chess.KNIGHT, chess.BISHOP, chess.ROOK, chess.QUEEN]:
+            for sq in board.pieces(pt, enemy):
                 dist = max(abs(chess.square_file(sq) - king_file),
                            abs(chess.square_rank(sq) - king_rank))
                 if dist <= 2:
@@ -98,30 +97,23 @@ def eval_pawn_structure(board: chess.Board) -> float:
     for color in [chess.WHITE, chess.BLACK]:
         sign = 1.0 if color == chess.WHITE else -1.0
         pawns = board.pieces(chess.PAWN, color)
-        pawn_files = [chess.square_file(sq) for sq in pawns]
+        pawn_squares = [(sq, chess.square_file(sq), chess.square_rank(sq)) for sq in pawns]
+        pawn_file_set = {f for _, f, _ in pawn_squares}
+        enemy_pawns = [(chess.square_file(ep), chess.square_rank(ep)) for ep in board.pieces(chess.PAWN, not color)]
+        direction = 1 if color == chess.WHITE else -1
 
-        for sq in pawns:
-            f = chess.square_file(sq)
-            r = chess.square_rank(sq)
-
+        for sq, f, r in pawn_squares:
             # Doubled: another friendly pawn on same file
-            if pawn_files.count(f) > 1:
+            if sum(1 for _, pf, _ in pawn_squares if pf == f) > 1:
                 score -= sign * 0.2
 
             # Isolated: no friendly pawn on adjacent files
-            has_neighbor = any(
-                chess.square_file(p) in (f - 1, f + 1) for p in pawns if p != sq
-            )
-            if not has_neighbor:
+            if (f - 1) not in pawn_file_set and (f + 1) not in pawn_file_set:
                 score -= sign * 0.15
 
             # Passed: no enemy pawn ahead on same or adjacent files
-            enemy_pawns = board.pieces(chess.PAWN, not color)
-            direction = 1 if color == chess.WHITE else -1
             is_passed = True
-            for ep in enemy_pawns:
-                ef = chess.square_file(ep)
-                er = chess.square_rank(ep)
+            for ef, er in enemy_pawns:
                 if abs(ef - f) <= 1:
                     if direction == 1 and er > r:
                         is_passed = False
@@ -130,14 +122,13 @@ def eval_pawn_structure(board: chess.Board) -> float:
                         is_passed = False
                         break
             if is_passed:
-                # Bonus scales with advancement
                 advancement = r if color == chess.WHITE else (7 - r)
                 score += sign * 0.1 * advancement
 
             # Connected: friendly pawn on adjacent file and same rank
             connected = any(
-                chess.square_file(p) in (f - 1, f + 1) and chess.square_rank(p) == r
-                for p in pawns if p != sq
+                pf in (f - 1, f + 1) and pr == r
+                for _, pf, pr in pawn_squares if _ != sq
             )
             if connected:
                 score += sign * 0.1

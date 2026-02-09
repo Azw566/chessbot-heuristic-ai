@@ -173,27 +173,27 @@ def evolution(
 def fitness_plot(go, history, mo):
     mo.stop(not history, mo.md("*Run evolution to see fitness plot.*"))
 
-    gens = [h["generation"] for h in history]
-    fig = go.Figure()
-    fig.add_trace(go.Scatter(
-        x=gens, y=[h["best_fitness"] for h in history],
+    _gens = [h["generation"] for h in history]
+    _fig = go.Figure()
+    _fig.add_trace(go.Scatter(
+        x=_gens, y=[h["best_fitness"] for h in history],
         mode="lines+markers", name="Best",
     ))
-    fig.add_trace(go.Scatter(
-        x=gens, y=[h["avg_fitness"] for h in history],
+    _fig.add_trace(go.Scatter(
+        x=_gens, y=[h["avg_fitness"] for h in history],
         mode="lines+markers", name="Average",
     ))
-    fig.add_trace(go.Scatter(
-        x=gens, y=[h["worst_fitness"] for h in history],
+    _fig.add_trace(go.Scatter(
+        x=_gens, y=[h["worst_fitness"] for h in history],
         mode="lines+markers", name="Worst",
     ))
-    fig.update_layout(
+    _fig.update_layout(
         title="Fitness Over Generations",
         xaxis_title="Generation",
         yaxis_title="Fitness",
         template="plotly_white",
     )
-    fig
+    _fig
     return
 
 
@@ -201,30 +201,30 @@ def fitness_plot(go, history, mo):
 def weight_plot(GENE_LABELS, go, history, mo):
     mo.stop(not history, mo.md("*Run evolution to see weight evolution.*"))
 
-    gens = [h["generation"] for h in history]
-    fig = go.Figure()
-    for i, label in enumerate(GENE_LABELS):
-        fig.add_trace(go.Scatter(
-            x=gens,
-            y=[h["best_genes"][i] for h in history],
+    _gens = [h["generation"] for h in history]
+    _fig = go.Figure()
+    for _i, _label in enumerate(GENE_LABELS):
+        _fig.add_trace(go.Scatter(
+            x=_gens,
+            y=[h["best_genes"][_i] for h in history],
             mode="lines+markers",
-            name=label,
+            name=_label,
         ))
-    fig.update_layout(
+    _fig.update_layout(
         title="Best Genome Weights Over Generations",
         xaxis_title="Generation",
         yaxis_title="Value",
         template="plotly_white",
     )
-    fig
+    _fig
     return
 
 
 @app.cell
 def genome_table(GENE_LABELS, champion, mo):
-    rows = "".join(
-        f"| {label} | {value:.4f} |\n"
-        for label, value in zip(GENE_LABELS, champion.genes)
+    _rows = "".join(
+        f"| {_label} | {_value:.4f} |\n"
+        for _label, _value in zip(GENE_LABELS, champion.genes)
     )
     mo.md(
         f"""
@@ -232,7 +232,7 @@ def genome_table(GENE_LABELS, champion, mo):
 
     | Gene | Value |
     |------|-------|
-    {rows}
+    {_rows}
         """
     )
     return
@@ -256,7 +256,7 @@ def game_selector(all_games, mo):
     gen_options = {f"Generation {g}": g for g in sorted(all_games.keys())}
     gen_dropdown = mo.ui.dropdown(
         options=gen_options,
-        value=1,
+        value="Generation 0",
         label="Generation",
     )
     gen_dropdown
@@ -266,18 +266,18 @@ def game_selector(all_games, mo):
 @app.cell
 def game_picker(all_games, gen_dropdown, mo):
     mo.stop(gen_dropdown.value is None)
-    gen = gen_dropdown.value
-    games = all_games[gen]
+    _gen = gen_dropdown.value
+    _games = all_games[_gen]
 
-    game_labels = {}
-    for i, g in enumerate(games):
-        result_icon = {"white": "1-0", "black": "0-1", "draw": "1/2"}[g["result"]]
-        label = f"Game {i+1}: Bot #{g['white_idx']} vs Bot #{g['black_idx']} ({result_icon}, {g['moves']} moves)"
-        game_labels[label] = i
+    _game_labels = {}
+    for _i, _g in enumerate(_games):
+        _result_icon = {"white": "1-0", "black": "0-1", "draw": "1/2"}[_g["result"]]
+        _label = f"Game {_i+1}: Bot #{_g['white_idx']} vs Bot #{_g['black_idx']} ({_result_icon}, {_g['moves']} moves)"
+        _game_labels[_label] = _i
 
     game_dropdown = mo.ui.dropdown(
-        options=game_labels,
-        value=0,
+        options=_game_labels,
+        value=list(_game_labels.keys())[0] if _game_labels else None,
         label="Game",
     )
     game_dropdown
@@ -287,15 +287,15 @@ def game_picker(all_games, gen_dropdown, mo):
 @app.cell
 def move_slider_cell(all_games, game_dropdown, gen_dropdown, mo):
     mo.stop(gen_dropdown.value is None or game_dropdown.value is None)
-    game = all_games[gen_dropdown.value][game_dropdown.value]
-    total_moves = game["moves"]
+    _game = all_games[gen_dropdown.value][game_dropdown.value]
+    _total_moves = _game["moves"]
 
     move_slider = mo.ui.slider(
         start=0,
-        stop=max(total_moves, 1),
+        stop=max(_total_moves, 1),
         step=1,
         value=0,
-        label=f"Move (0 = start, {total_moves} = final)",
+        label=f"Move (0 = start, {_total_moves} = final)",
         full_width=True,
     )
     move_slider
@@ -317,45 +317,45 @@ def board_replay(
         or move_slider.value is None
     )
 
-    game = all_games[gen_dropdown.value][game_dropdown.value]
-    move_list = game["move_list"]
-    target_move = move_slider.value
+    _game = all_games[gen_dropdown.value][game_dropdown.value]
+    _move_list = _game["move_list"]
+    _target_move = move_slider.value
 
     # Rebuild the board up to the selected move
-    board = chess.Board()
-    san_log = []
-    for i, san in enumerate(move_list[:target_move]):
-        move = board.parse_san(san)
-        board.push(move)
+    _board = chess.Board()
+    _san_log = []
+    for _i, _san in enumerate(_move_list[:_target_move]):
+        _move = _board.parse_san(_san)
+        _board.push(_move)
         # Build numbered move list: "1. e4 e5 2. Nf3 ..."
-        if i % 2 == 0:
-            san_log.append(f"{i // 2 + 1}. {san}")
+        if _i % 2 == 0:
+            _san_log.append(f"{_i // 2 + 1}. {_san}")
         else:
-            san_log.append(san)
+            _san_log.append(_san)
 
     # Highlight the last move played
-    last_move = board.peek() if board.move_stack else None
-    svg = chess.svg.board(board, lastmove=last_move, size=420)
+    _last_move = _board.peek() if _board.move_stack else None
+    _svg = chess.svg.board(_board, lastmove=_last_move, size=420)
 
     # Status line
-    result_str = {"white": "1-0 (White wins)", "black": "0-1 (Black wins)", "draw": "1/2-1/2 (Draw)"}
-    status = ""
-    if target_move == game["moves"]:
-        status = f"**Final: {result_str[game['result']]}**"
-    elif board.is_check():
-        status = "**Check!**"
+    _result_str = {"white": "1-0 (White wins)", "black": "0-1 (Black wins)", "draw": "1/2-1/2 (Draw)"}
+    _status = ""
+    if _target_move == _game["moves"]:
+        _status = f"**Final: {_result_str[_game['result']]}**"
+    elif _board.is_check():
+        _status = "**Check!**"
 
-    side = "White" if board.turn == chess.WHITE else "Black"
-    move_text = " ".join(san_log) if san_log else "(starting position)"
+    _side = "White" if _board.turn == chess.WHITE else "Black"
+    _move_text = " ".join(_san_log) if _san_log else "(starting position)"
 
     mo.vstack([
         mo.md(
-            f"### Bot #{game['white_idx']} (White) vs Bot #{game['black_idx']} (Black)\n\n"
-            f"**{side} to move** | Move {target_move} / {game['moves']}\n\n"
-            f"{status}"
+            f"### Bot #{_game['white_idx']} (White) vs Bot #{_game['black_idx']} (Black)\n\n"
+            f"**{_side} to move** | Move {_target_move} / {_game['moves']}\n\n"
+            f"{_status}"
         ),
-        mo.Html(svg),
-        mo.md(f"**Moves:** {move_text}"),
+        mo.Html(_svg),
+        mo.md(f"**Moves:** {_move_text}"),
     ])
     return
 
